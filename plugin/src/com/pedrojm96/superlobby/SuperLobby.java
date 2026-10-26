@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.HashSet;
+import java.util.UUID;
+import com.pedrojm96.superlobby.listener.RegionListener;
 
 import org.black_ixx.playerpoints.PlayerPoints;
 import org.bstats.bukkit.Metrics;
@@ -82,6 +85,10 @@ public class SuperLobby implements CoreLoader{
 	public CoreConfig configMessages;
 	public CoreConfig configFirstJoin;
 	public CoreLog log;
+	public CoreConfig configRegions;
+	public final Map<String, RegionRule> regionRules = new HashMap<String, RegionRule>();
+	public final Set<UUID> hubDisabled = new HashSet<UUID>();
+	public WorldGuardHook worldGuard = new WorldGuardHook();
 	public Permission permission = null;
 	public Economy economy = null;
 	public PlayerPoints playerPoints = null;
@@ -209,6 +216,9 @@ public class SuperLobby implements CoreLoader{
 		
 		this.configFirstJoin = new CoreConfig(this.instance,"firstjoin",this.log,this.instance.getResource("firstjoin.yml"),true);
 		loadFirsJoinKit();
+
+		this.configRegions = new CoreConfig(this.instance,"regions",this.log,this.instance.getResource("regions.yml"),false);
+		loadRegions();
 		/******************************************************************************************************************
 		 *                                  Regsitro de canal de mensaje para bungeecord                                  *
 		 ******************************************************************************************************************/
@@ -240,6 +250,9 @@ public class SuperLobby implements CoreLoader{
 		pm.registerEvents(new BlockListener(this), this.instance);
 		pm.registerEvents(new EntityListener(this), this.instance);
 		pm.registerEvents(new OthersListener(this), this.instance);
+		pm.registerEvents(new RegionListener(this), this.instance);
+
+
 		
 		new AlwaysDayNightRun(this).runTaskTimer(this.instance, 20L, 200L);
 		CoreVariables.iniUcode();
@@ -835,8 +848,80 @@ public class SuperLobby implements CoreLoader{
 			}
 		}
 	}
-	
-	
+
+	public void loadRegions(){
+		this.regionRules.clear();
+		if (this.configRegions == null || !this.configRegions.getBoolean("enable")){
+			return;
+		}
+		ConfigurationSection list = this.configRegions.getConfigurationSection("list");
+		if (list == null){
+			return;
+		}
+		for (String id : list.getKeys(false)){
+			ConfigurationSection sec = list.getConfigurationSection(id);
+			if (sec == null){
+				continue;
+			}
+			RegionRule rule = new RegionRule((id.toLowerCase()));
+			rule.setDisableHubMode(sec.getBoolean("disable-hub-mode", false));
+			rule.setRemoveHubItems(sec.getBoolean("remove-hub-items", false));
+			rule.setRestoreHubItemsOnLeave(sec.getBoolean("restore-hub-items-on-leave", true));
+			rule.setEnterCommands(sec.getStringList("enter-commands"));
+			rule.setLeaveCommands(sec.getStringList("leave-commands"));
+			this.regionRules.put(rule.getId(), rule);
+		}
+		this.log.info("Loaded" + this.regionRules.size() + "WorldGuard region rule(s).");
+	}
+
+	public boolean isHubDisabled(Player p){
+		return p != null && this.hubDisabled.contains(p.getUniqueId());
+	}
+
+	/** like isWorldRadius but also false when the player's hub mode is turned off. */
+	public boolean lobbyRestrict(Player p, Location loc, String path) {
+		return isWorldRadius(loc, path) && !isHubDisabled(p);
+	}
+
+	public void giveLobbyItems(Player p){
+		if (!this.config.getBoolean("lobby-items.enable")){
+			return;
+		}
+		if (!isWorldRadius(p.getLocation(), "lobby-items")){
+			return;
+		}
+
+		for (CoreItem item : this.items){
+			if (item.hasPerm(p)){
+				item.give(p, this.loader);
+			}
+		}
+
+	}
+	public void removeLobbyItems(Player p){
+		ItemStack[] contents = p.getInventory().getContents();
+		for (int i = 0; i < contents.length; i++){
+			ItemStack stack = contents[i];
+			if (stack == null){
+				continue;
+			}
+			for (CoreItem item : this.items){
+				try{
+					if (item.like(stack, p)){
+						p.getInventory().setItem(i, null);
+						break;
+					}
+				} catch (Throwable ignored){
+					//
+				}
+			}
+		}
+		p.updateInventory();
+	}
+
+
+
+
 	public boolean isWorldRadius(Location check,String path) {
 		if(plugin.config.getBoolean(path+".use-spawn-radius")) {
 			return this.isInSpawnRadius(check);

@@ -59,16 +59,17 @@ public class OthersListener implements Listener{
 	@EventHandler (priority= EventPriority.HIGHEST)
 	public void onItemMove(InventoryClickEvent e) {
 		if (plugin.config.getBoolean("disable-item-move.enable")){
-			if ((plugin.isWorldRadius(e.getWhoClicked().getLocation(), "disable-item-move")) && (!e.isCancelled())) 
+			if ((plugin.lobbyRestrict((Player) e.getWhoClicked(), e.getWhoClicked().getLocation(), "disable-item-move")) && (!e.isCancelled()))
 			{
 				if ((e.getWhoClicked().isOp()) || (e.getWhoClicked().hasPermission("superlobby.staff")))
 				{
-					if (e.getWhoClicked().getGameMode() == GameMode.CREATIVE) 
-					{
-						e.setCancelled(false);
-					} else {
-						e.setCancelled(true);
-					}
+					e.setCancelled(false);
+					//if (e.getWhoClicked().getGameMode() == GameMode.CREATIVE)
+					//{
+						//e.setCancelled(false);
+					//} else {
+					    //e.setCancelled(true);
+					//}
 				} else {
 					e.setCancelled(true);
 				}
@@ -94,12 +95,13 @@ public class OthersListener implements Listener{
 				 if (plugin.isWorldRadius(e.getRemover().getLocation(), "frame-protect")) {
 					 if ((e.getRemover().isOp()) || (e.getRemover().hasPermission("superlobby.staff")))
 					 {
-						 if (((HumanEntity) e.getRemover()).getGameMode() == GameMode.CREATIVE) 
-						 {
-							 e.setCancelled(false);
-						 } else {
-							 e.setCancelled(true);
-						 }
+						 e.setCancelled(false);
+//						 if (((HumanEntity) e.getRemover()).getGameMode() == GameMode.CREATIVE)
+//						 {
+//							 e.setCancelled(false);
+//						 } else {
+//							 e.setCancelled(true);
+//						 }
 					 } else {
 						 e.setCancelled(true);
 					 }
@@ -125,12 +127,13 @@ public class OthersListener implements Listener{
 			 if (plugin.isWorldRadius(e.getPlayer().getLocation(), "frame-protect")) {
 				 if ((e.getPlayer().isOp()) || (e.getPlayer().hasPermission("superlobby.staff")))
 				 {
-					 if (e.getPlayer().getGameMode() == GameMode.CREATIVE) 
-					 {
-						 e.setCancelled(false);
-					 } else {
-						 e.setCancelled(true);
-					 }
+					 e.setCancelled(false);
+//					 if (e.getPlayer().getGameMode() == GameMode.CREATIVE)
+//					 {
+//						 e.setCancelled(false);
+//					 } else {
+//						 e.setCancelled(true);
+//					 }
 				 } else {
 					 e.setCancelled(true);
 				 }

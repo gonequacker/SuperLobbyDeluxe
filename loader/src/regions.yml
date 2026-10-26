@@ -1,0 +1,35 @@
+# ============================================================
+#  WorldGuard region rules  (requires the WorldGuard plugin)
+# ============================================================
+# Each entry under "list:" is the ID of a WorldGuard region.
+# When a player ENTERS that region, SuperLobby can:
+#   - turn OFF "hub mode" for them (stop re-giving lobby items
+#     and lift lobby restrictions like no-PvP / no-item-move),
+#   - remove the hub/lobby items from their inventory,
+#   - run a list of commands (e.g. give them a kit).
+# When they LEAVE, it can restore hub mode + the hub items and
+# run another list of commands.
+#
+# Commands:
+#   "<player>" is replaced with the player's name.
+#   Prefix each command with how to run it:
+#       console: <cmd>   -> run by the server console
+#       player:  <cmd>   -> run as the player
+#   (no prefix = console)
+#
+# Does nothing unless WorldGuard is installed.
+
+enable: true
+
+list:
+  # Example PvP zone. Rename "pvp" to YOUR WorldGuard region id
+  # and change the commands to whatever hands out your kit.
+  pvp:
+    disable-hub-mode: true
+    remove-hub-items: true
+    restore-hub-items-on-leave: true
+    enter-commands:
+      - "console: say <player> entered the PvP zone"
+      # - "console: kit pvp <player>"     # example: give a kit
+    leave-commands: []
+    # - "player: spawn"

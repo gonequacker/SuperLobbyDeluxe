@@ -37,3 +37,11 @@ bin
 
 # Ignora todos los archivos jarinjar
 **/superlobby-plugin.jarinjar
+
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# JVM crash logs
+hs_err_pid*.log

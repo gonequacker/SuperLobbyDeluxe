@@ -93,13 +93,14 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	public void onDropItem(PlayerDropItemEvent e) {
 		if (plugin.config.getBoolean("disable-drop-item.enable")) {
-			if ((plugin.isWorldRadius(e.getPlayer().getLocation(), "disable-drop-item")) && (!e.isCancelled())) {
+			if ((plugin.lobbyRestrict(e.getPlayer(), e.getPlayer().getLocation(), "disable-drop-item")) && (!e.isCancelled())) {
 				if ((e.getPlayer().isOp()) || (e.getPlayer().hasPermission("superlobby.staff"))) {
-					if (e.getPlayer().getGameMode() == GameMode.CREATIVE) {
-						e.setCancelled(false);
-					} else {
-						e.setCancelled(true);
-					}
+//					if (e.getPlayer().getGameMode() == GameMode.CREATIVE) {
+//						e.setCancelled(false);
+//					} else {
+//						e.setCancelled(true);
+//					}
+					e.setCancelled(false);
 				} else {
 					e.setCancelled(true);
 				}
@@ -120,13 +121,14 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	public void onPickUpItems(PlayerPickupItemEvent e) {
 		if (plugin.config.getBoolean("disable-pick-up-items.enable")) {
-			if ((plugin.isWorldRadius(e.getPlayer().getLocation(), "disable-pick-up-items")) && (!e.isCancelled())) {
+			if ((plugin.lobbyRestrict(e.getPlayer(), e.getPlayer().getLocation(), "disable-pick-up-items")) && (!e.isCancelled())) {
 				if ((e.getPlayer().isOp()) || (e.getPlayer().hasPermission("superlobby.staff"))) {
-					if (e.getPlayer().getGameMode() == GameMode.CREATIVE) {
-						e.setCancelled(false);
-					} else {
-						e.setCancelled(true);
-					}
+//					if (e.getPlayer().getGameMode() == GameMode.CREATIVE) {
+//						e.setCancelled(false);
+//					} else {
+//						e.setCancelled(true);
+//					}
+					e.setCancelled(false);
 				} else {
 					e.setCancelled(true);
 				}
@@ -225,7 +227,7 @@ public class PlayerListener implements Listener {
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onJoinLobbyItem(PlayerJoinEvent e) {
 		if (plugin.config.getBoolean("lobby-items.enable") && plugin.config.getBoolean("lobby-items.join-server")) {
-			if (plugin.isWorldRadius(e.getPlayer().getLocation(), "lobby-items")) {
+			if (plugin.lobbyRestrict(e.getPlayer(), e.getPlayer().getLocation(), "lobby-items")) {
 				for (CoreItem item : plugin.items) {
 					if (item.hasPerm(e.getPlayer())) {
 						item.give(e.getPlayer(), plugin.loader);
@@ -247,6 +249,7 @@ public class PlayerListener implements Listener {
 	 * 
 	 * @param e
 	 */
+	@EventHandler
 	public void onRespawnLobbyItem(final PlayerRespawnEvent e) {
 		if (plugin.config.getBoolean("lobby-items.respawn")) {
 			Bukkit.getScheduler().scheduleSyncDelayedTask(plugin.getInstance(), new Runnable() {
@@ -254,7 +257,7 @@ public class PlayerListener implements Listener {
 					if (!e.getPlayer().isOnline()) {
 						return;
 					}
-					if (plugin.isWorldRadius(e.getPlayer().getLocation(), "lobby-items")) {
+					if (plugin.lobbyRestrict(e.getPlayer(), e.getPlayer().getLocation(), "lobby-items")) {
 						for (CoreItem item : plugin.items) {
 							if (item.hasPerm(e.getPlayer())) {
 								item.give(e.getPlayer(), plugin.loader);
@@ -286,7 +289,7 @@ public class PlayerListener implements Listener {
 					if (!e.getPlayer().isOnline()) {
 						return;
 					}
-					if (plugin.isWorldRadius(e.getPlayer().getLocation(), "lobby-items")) {
+					if (plugin.lobbyRestrict(e.getPlayer(), e.getPlayer().getLocation(), "lobby-items")) {
 						for (CoreItem item : plugin.items) {
 							if (item.hasPerm(e.getPlayer())) {
 								item.give(e.getPlayer(), plugin.loader);
@@ -312,7 +315,7 @@ public class PlayerListener implements Listener {
 	@EventHandler
 	public void onLobbyItemClick(PlayerInteractEvent e) {
 		if (plugin.config.getBoolean("lobby-items.enable")) {
-			if (plugin.isWorldRadius(e.getPlayer().getLocation(), "lobby-items")) {
+			if (plugin.lobbyRestrict(e.getPlayer(), e.getPlayer().getLocation(), "lobby-items")) {
 				if ((e.getAction() == Action.RIGHT_CLICK_AIR) || (e.getAction() == Action.RIGHT_CLICK_BLOCK)) {
 					ItemStack itemInHand = e.getItem();
 					for (CoreItem item : plugin.items) {
@@ -408,11 +411,12 @@ public class PlayerListener implements Listener {
 			if (e.getRightClicked() instanceof ItemFrame) {
 				if (plugin.isWorldRadius(e.getPlayer().getLocation(), "frame-protect")) {
 					if ((e.getPlayer().isOp()) || (e.getPlayer().hasPermission("superlobby.staff"))) {
-						if (e.getPlayer().getGameMode() == GameMode.CREATIVE) {
-							e.setCancelled(false);
-						} else {
-							e.setCancelled(true);
-						}
+//						if (e.getPlayer().getGameMode() == GameMode.CREATIVE) {
+//							e.setCancelled(false);
+//						} else {
+//							e.setCancelled(true);
+//						}
+						e.setCancelled(false);
 					} else {
 						e.setCancelled(true);
 					}
@@ -927,11 +931,13 @@ public class PlayerListener implements Listener {
 				if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
 					if (CoreMaterial.isMaterial(e.getClickedBlock().getType(), "DISPENSER")) {
 						if ((e.getPlayer().isOp()) || (e.getPlayer().hasPermission("superlobby.staff"))) {
-							if (e.getPlayer().getGameMode() == GameMode.CREATIVE) {
-								e.setCancelled(false);
-							} else {
-								e.setCancelled(true);
-							}
+//							if (e.getPlayer().getGameMode() == GameMode.CREATIVE) {
+//								e.setCancelled(false);
+//							} else {
+//								e.setCancelled(true);
+//							}
+
+							e.setCancelled(false);
 						} else {
 							e.setCancelled(true);
 						}
@@ -957,11 +963,12 @@ public class PlayerListener implements Listener {
 				if (e.getAction() == Action.RIGHT_CLICK_BLOCK || e.getAction() == Action.LEFT_CLICK_BLOCK) {
 					if (e.getClickedBlock().getType() == Material.NOTE_BLOCK) {
 						if ((e.getPlayer().isOp()) || (e.getPlayer().hasPermission("superlobby.staff"))) {
-							if (e.getPlayer().getGameMode() == GameMode.CREATIVE) {
-								e.setCancelled(false);
-							} else {
-								e.setCancelled(true);
-							}
+//							if (e.getPlayer().getGameMode() == GameMode.CREATIVE) {
+//								e.setCancelled(false);
+//							} else {
+//								e.setCancelled(true);
+//							}
+						    e.setCancelled(false);
 						} else {
 							e.setCancelled(true);
 						}
@@ -988,11 +995,7 @@ public class PlayerListener implements Listener {
 
 					if (CoreMaterial.isMaterial(e.getClickedBlock().getType(), buttons)) {
 						if ((e.getPlayer().isOp()) || (e.getPlayer().hasPermission("superlobby.staff"))) {
-							if (e.getPlayer().getGameMode() == GameMode.CREATIVE) {
-								e.setCancelled(false);
-							} else {
-								e.setCancelled(true);
-							}
+							e.setCancelled(false);
 						} else {
 							e.setCancelled(true);
 						}
@@ -1019,11 +1022,7 @@ public class PlayerListener implements Listener {
 
 					if (CoreMaterial.isMaterial(e.getClickedBlock().getType(), trapdoors)) {
 						if ((e.getPlayer().isOp()) || (e.getPlayer().hasPermission("superlobby.staff"))) {
-							if (e.getPlayer().getGameMode() == GameMode.CREATIVE) {
-								e.setCancelled(false);
-							} else {
-								e.setCancelled(true);
-							}
+							e.setCancelled(false);
 						} else {
 							e.setCancelled(true);
 						}
@@ -1049,11 +1048,7 @@ public class PlayerListener implements Listener {
 				if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
 					if (CoreMaterial.isMaterial(e.getClickedBlock().getType(), gates)) {
 						if ((e.getPlayer().isOp()) || (e.getPlayer().hasPermission("superlobby.staff"))) {
-							if (e.getPlayer().getGameMode() == GameMode.CREATIVE) {
-								e.setCancelled(false);
-							} else {
-								e.setCancelled(true);
-							}
+							e.setCancelled(false);
 						} else {
 							e.setCancelled(true);
 						}
@@ -1079,11 +1074,7 @@ public class PlayerListener implements Listener {
 				if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
 					if (CoreMaterial.isMaterial(e.getClickedBlock().getType(), "HOPPER", "HOPPER_MINECART")) {
 						if ((e.getPlayer().isOp()) || (e.getPlayer().hasPermission("superlobby.staff"))) {
-							if (e.getPlayer().getGameMode() == GameMode.CREATIVE) {
-								e.setCancelled(false);
-							} else {
-								e.setCancelled(true);
-							}
+							e.setCancelled(false);
 						} else {
 							e.setCancelled(true);
 						}
@@ -1111,11 +1102,7 @@ public class PlayerListener implements Listener {
 				if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
 					if (CoreMaterial.isMaterial(e.getClickedBlock().getType(), "DROPPER")) {
 						if ((e.getPlayer().isOp()) || (e.getPlayer().hasPermission("superlobby.staff"))) {
-							if (e.getPlayer().getGameMode() == GameMode.CREATIVE) {
-								e.setCancelled(false);
-							} else {
-								e.setCancelled(true);
-							}
+							e.setCancelled(false);
 						} else {
 							e.setCancelled(true);
 						}
@@ -1143,11 +1130,7 @@ public class PlayerListener implements Listener {
 					if (CoreMaterial.isMaterial(e.getClickedBlock().getType(), "DAYLIGHT_DETECTOR",
 							"DAYLIGHT_DETECTOR_INVERTED", "LEGACY_DAYLIGHT_DETECTOR_INVERTED")) {
 						if ((e.getPlayer().isOp()) || (e.getPlayer().hasPermission("superlobby.staff"))) {
-							if (e.getPlayer().getGameMode() == GameMode.CREATIVE) {
-								e.setCancelled(false);
-							} else {
-								e.setCancelled(true);
-							}
+							e.setCancelled(false);
 						} else {
 							e.setCancelled(true);
 						}
@@ -1172,11 +1155,7 @@ public class PlayerListener implements Listener {
 			if ((plugin.isWorldRadius(e.getPlayer().getLocation(), "disable-armorstands-interaction"))
 					&& (!e.isCancelled())) {
 				if ((e.getPlayer().isOp()) || (e.getPlayer().hasPermission("superlobby.staff"))) {
-					if (e.getPlayer().getGameMode() == GameMode.CREATIVE) {
-						e.setCancelled(false);
-					} else {
-						e.setCancelled(true);
-					}
+					e.setCancelled(false);
 				} else {
 					e.setCancelled(true);
 				}
@@ -1201,11 +1180,7 @@ public class PlayerListener implements Listener {
 
 					if (CoreMaterial.isMaterial(e.getClickedBlock().getType(), doors)) {
 						if ((e.getPlayer().isOp()) || (e.getPlayer().hasPermission("superlobby.staff"))) {
-							if (e.getPlayer().getGameMode() == GameMode.CREATIVE) {
-								e.setCancelled(false);
-							} else {
-								e.setCancelled(true);
-							}
+							e.setCancelled(false);
 						} else {
 							e.setCancelled(true);
 						}

@@ -33,12 +33,13 @@ public class BlockListener implements Listener{
 			{
 				if ((e.getPlayer().isOp()) || (e.getPlayer().hasPermission("superlobby.staff")))
 				{
-					if (e.getPlayer().getGameMode() == GameMode.CREATIVE) 
-					{
-						e.setCancelled(false);
-					} else {
-						e.setCancelled(true);
-					}
+					e.setCancelled(false);
+//					if (e.getPlayer().getGameMode() == GameMode.CREATIVE)
+//					{
+//						e.setCancelled(false);
+//					} else {
+//						e.setCancelled(true);
+//					}
 				} else {
 					e.setCancelled(true);
 				}
@@ -61,12 +62,13 @@ public class BlockListener implements Listener{
 			{
 				if ((e.getPlayer().isOp()) || (e.getPlayer().hasPermission("superlobby.staff")))
 				{
-					if (e.getPlayer().getGameMode() == GameMode.CREATIVE) 
-					{
-						e.setCancelled(false);
-					} else {
-						e.setCancelled(true);
-					}
+					e.setCancelled(false);
+//					if (e.getPlayer().getGameMode() == GameMode.CREATIVE)
+//					{
+//						e.setCancelled(false);
+//					} else {
+//						e.setCancelled(true);
+//					}
 				} else {
 					e.setCancelled(true);
 				}

@@ -109,7 +109,7 @@ public class EntityListener implements Listener{
 	      return;
 	    }
 	    if (plugin.config.getBoolean("disable-damage.enable")){
-			if ((plugin.isWorldRadius(e.getEntity().getLocation(), "disable-damage")) && (!e.isCancelled())) 
+			if ((plugin.lobbyRestrict((Player) e.getEntity(), e.getEntity().getLocation(), "disable-damage")) && (!e.isCancelled()))
 			{
 				e.setCancelled(true); 
 				((Player) e.getEntity()).setHealth(20);
@@ -132,7 +132,7 @@ public class EntityListener implements Listener{
 			return;
 		}
 		if (plugin.config.getBoolean("disable-hunger.enable")){
-			if ((plugin.isWorldRadius(e.getEntity().getLocation(), "disable-hunger")) && (!e.isCancelled())) 
+			if ((plugin.lobbyRestrict((Player) e.getEntity(), e.getEntity().getLocation(), "disable-hunger")) && (!e.isCancelled()))
 			{
 				e.setCancelled(true); 
 				((Player) e.getEntity()).setFoodLevel(20);

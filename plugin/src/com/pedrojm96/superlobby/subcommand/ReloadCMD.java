@@ -48,6 +48,10 @@ public class ReloadCMD extends CoreSubCommand{
 		
 		plugin.configFirstJoin = new CoreConfig(plugin.getInstance(),"firstjoin",plugin.log,plugin.getInstance().getResource("firstjoin.yml"),true);
 		plugin.loadFirsJoinKit();
+
+		plugin.configRegions = new CoreConfig(plugin.getInstance(),"regions",plugin.log,plugin.getInstance().getResource("regions.yml"),false);
+		plugin.loadRegions();
+
 		plugin.configBoard = new CoreConfig(plugin.getInstance(),"board",plugin.log,plugin.getInstance().getResource("board.yml"),false);
 		plugin.playerBoards = new HashMap<Player, PlayerBoard>();
 		if(plugin.configBoard.getBoolean("settings-enable")){
