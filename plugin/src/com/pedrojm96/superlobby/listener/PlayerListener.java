@@ -94,14 +94,12 @@ public class PlayerListener implements Listener {
 	public void onDropItem(PlayerDropItemEvent e) {
 		if (plugin.config.getBoolean("disable-drop-item.enable")) {
 			if ((plugin.lobbyRestrict(e.getPlayer(), e.getPlayer().getLocation(), "disable-drop-item")) && (!e.isCancelled())) {
-				if ((e.getPlayer().isOp()) || (e.getPlayer().hasPermission("superlobby.staff"))) {
+				if (!((e.getPlayer().isOp()) || (e.getPlayer().hasPermission("superlobby.staff")))) {
 //					if (e.getPlayer().getGameMode() == GameMode.CREATIVE) {
 //						e.setCancelled(false);
 //					} else {
 //						e.setCancelled(true);
 //					}
-					e.setCancelled(false);
-				} else {
 					e.setCancelled(true);
 				}
 			}
@@ -122,14 +120,12 @@ public class PlayerListener implements Listener {
 	public void onPickUpItems(PlayerPickupItemEvent e) {
 		if (plugin.config.getBoolean("disable-pick-up-items.enable")) {
 			if ((plugin.lobbyRestrict(e.getPlayer(), e.getPlayer().getLocation(), "disable-pick-up-items")) && (!e.isCancelled())) {
-				if ((e.getPlayer().isOp()) || (e.getPlayer().hasPermission("superlobby.staff"))) {
+				if (!((e.getPlayer().isOp()) || (e.getPlayer().hasPermission("superlobby.staff")))) {
 //					if (e.getPlayer().getGameMode() == GameMode.CREATIVE) {
 //						e.setCancelled(false);
 //					} else {
 //						e.setCancelled(true);
 //					}
-					e.setCancelled(false);
-				} else {
 					e.setCancelled(true);
 				}
 			}

@@ -61,17 +61,15 @@ public class OthersListener implements Listener{
 		if (plugin.config.getBoolean("disable-item-move.enable")){
 			if ((plugin.lobbyRestrict((Player) e.getWhoClicked(), e.getWhoClicked().getLocation(), "disable-item-move")) && (!e.isCancelled()))
 			{
-				if ((e.getWhoClicked().isOp()) || (e.getWhoClicked().hasPermission("superlobby.staff")))
+				if (!((e.getWhoClicked().isOp()) || (e.getWhoClicked().hasPermission("superlobby.staff"))))
 				{
-					e.setCancelled(false);
+					e.setCancelled(true);
 					//if (e.getWhoClicked().getGameMode() == GameMode.CREATIVE)
 					//{
 						//e.setCancelled(false);
 					//} else {
 					    //e.setCancelled(true);
 					//}
-				} else {
-					e.setCancelled(true);
 				}
 			}
 		}
