@@ -146,10 +146,10 @@ public class PlayerListener implements Listener {
 		if (plugin.config.getBoolean("join-clear-inventory")) {
 			if (plugin.config.getBoolean("join-clear-inventory-bypass")) {
 				if (!e.getPlayer().hasPermission("join.bypass.clearinventory")) {
-					e.getPlayer().getInventory().clear();
+					plugin.clearFullInventory(e.getPlayer());
 				}
 			} else {
-				e.getPlayer().getInventory().clear();
+				plugin.clearFullInventory(e.getPlayer());
 			}
 		}
 		if (plugin.config.getBoolean("join-clear-chat")) {

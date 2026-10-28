@@ -869,6 +869,7 @@ public class SuperLobby implements CoreLoader{
 			rule.setRestoreHubItemsOnLeave(sec.getBoolean("restore-hub-items-on-leave", true));
 			rule.setEnterCommands(sec.getStringList("enter-commands"));
 			rule.setLeaveCommands(sec.getStringList("leave-commands"));
+			rule.setClearInventoryOnLeave(sec.getBoolean("clear-inventory-on-leave", false));
 			this.regionRules.put(rule.getId(), rule);
 		}
 		this.log.info("Loaded" + this.regionRules.size() + "WorldGuard region rule(s).");
@@ -917,6 +918,13 @@ public class SuperLobby implements CoreLoader{
 			}
 		}
 		p.updateInventory();
+	}
+
+	public void clearFullInventory(Player p){
+		p.getInventory().clear();
+		p.getInventory().setArmorContents(new ItemStack[4]);
+		p.updateInventory();
+
 	}
 
 

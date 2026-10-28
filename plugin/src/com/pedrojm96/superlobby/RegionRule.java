@@ -11,6 +11,7 @@ public class RegionRule {
     private boolean restoreHubItemsOnLeave = true;
     private List<String> enterCommands = new ArrayList<String>();
     private List<String> leaveCommands = new ArrayList<String>();
+    private boolean clearInventoryOnLeave= false;
 
     public RegionRule(String id){
         this.id = id;
@@ -62,5 +63,16 @@ public class RegionRule {
     public void setLeaveCommands(List<String> leaveCommands){
         this.leaveCommands = (leaveCommands != null) ? leaveCommands : new ArrayList<String>();
     }
+    ////
+    public boolean isClearInventoryOnLeave(){
+        return clearInventoryOnLeave;
+    }
+
+    public void setClearInventoryOnLeave(boolean clearInventoryOnLeave){
+        this.clearInventoryOnLeave = clearInventoryOnLeave;
+    }
+
 }
+
+
 

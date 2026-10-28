@@ -28,6 +28,7 @@ list:
     disable-hub-mode: true
     remove-hub-items: true
     restore-hub-items-on-leave: true
+    clear-inventory-on-leave: true  # clear-inventory-on-leave wipes inventory + armor when leaving.
     enter-commands:
       - "console: say <player> entered the PvP zone"
       # - "console: kit pvp <player>"     # example: give a kit

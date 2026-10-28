@@ -111,12 +111,14 @@ public class RegionListener implements Listener{
     private void onLeave(Player p, String region, Set<String> now) {
         RegionRule rule = plugin.regionRules.get(region);
         if (rule == null) return;
-        runCommands(p, rule.getLeaveCommands());
         // Only turn hub mode back on if no OTHER region they're still in also disables it.
         if (rule.isDisableHubMode() && !stillHubDisabled(now, region)) {
             plugin.hubDisabled.remove(p.getUniqueId());
         }
+        if (rule.isClearInventoryOnLeave()) plugin.clearFullInventory(p);
         if (rule.isRestoreHubItemsOnLeave()) plugin.giveLobbyItems(p);
+        runCommands(p, rule.getLeaveCommands());
+
     }
 
     private boolean stillHubDisabled(Set<String> now, String leaving) {
